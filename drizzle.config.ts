@@ -4,9 +4,11 @@ import { env } from "~/env";
 
 export default {
   schema: "./src/server/db/schema.ts",
-  driver: "better-sqlite",
+  out: './migrations',
+  driver: "turso",
   dbCredentials: {
-    url: env.DATABASE_URL,
+    url: env.TURSO_CONNECTION_URL,
+    authToken: env.TURSO_AUTH_TOKEN,
   },
   tablesFilter: ["mark42_*"],
 } satisfies Config;
