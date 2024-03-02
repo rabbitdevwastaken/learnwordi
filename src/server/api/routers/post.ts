@@ -36,6 +36,12 @@ export const postRouter = createTRPCRouter({
     });
   }),
 
+  getRepositories: protectedProcedure.query(() => {
+    return [
+      { name: "tRPC", url: ""}
+    ];
+  }),
+
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
