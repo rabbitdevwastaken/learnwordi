@@ -70,8 +70,6 @@ async function CrudShowcase() {
   if (!session?.user) return null;
 
   const latestPost = await api.post.getLatest.query();  
-  const repositories = await api.github.getRepositories.query();
-  console.log(repositories);
 
   return (
     <div className="w-full max-w-xs">

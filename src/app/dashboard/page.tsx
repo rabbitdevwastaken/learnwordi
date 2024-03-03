@@ -1,11 +1,6 @@
 import { View } from "../_components/layout/view";
+import { api } from "~/trpc/server";
 
-export default function Dashboard() {
-  return (
-    <View>
-      <div>
-        <h1>Dashboard</h1>
-      </div>
-    </View>
-  );
+export default async function Dashboard() {
+  return <p>Dashboard Page</p>;
 }
