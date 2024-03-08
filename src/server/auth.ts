@@ -23,6 +23,7 @@ import { createTable } from "~/server/db/schema";
 declare module "next-auth" {
   interface Session extends DefaultSession {
     accessToken: string;
+    error?: string;
     user: {
       id: string;
       // ...other properties
@@ -47,53 +48,6 @@ declare module "next-auth/jwt" {
 }
 
 /**
- * Takes a token, and returns a new token with updated
- * `accessToken` and `accessTokenExpires`. If an error occurs,
- * returns the old token and an error property
- */
-async function refreshAccessToken(token: JWT & { refreshToken: string }): Promise<JWT> {
-  try {
-
-    const params = new URLSearchParams({
-      client_id: env.GITHUB_CLIENT_ID,
-      client_secret: env.GITHUB_CLIENT_SECRET,
-      grant_type: 'refresh_token',
-      refresh_token: token.refreshToken
-    });
-
-    const url = `https://github.com/login/oauth/access_token?${params.toString()}`
-
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      method: 'POST'
-    })
-
-    const refreshedTokens = await response.json() as { access_token: string, expires_in: number, refresh_token?: string }
-
-    if (!response.ok) {
-      throw refreshedTokens
-    }
-
-    return {
-      ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken // Fall back to old refresh token
-    }
-  } catch (error) {
-    console.log(error)
-
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError'
-    }
-  }
-}
-
-
-/**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
  * @see https://next-auth.js.org/configuration/options
@@ -105,6 +59,8 @@ export const authOptions: NextAuthOptions = {
     updateAge: 24 * 60 * 60, // Session update age in seconds
   },
   callbacks: {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     async jwt({ token, user, account }) {
       // Initial sign in
       if (account && user) {
@@ -116,16 +72,11 @@ export const authOptions: NextAuthOptions = {
         }
       }
 
-      // Return previous token if the access token has not expired yet
-      if (Date.now() < token.accessTokenExpires) {
-        return token
-      }
-
-      // Access token has expired, try to update it
-      return refreshAccessToken(token)
+      return token
     },
     session: ({ session, token }) => ({
       ...session,
+      error: token.error,
       user: {
         ...token.user,
         id: token.user.id

@@ -9,10 +9,10 @@ export const View: React.FC<ViewProps> = ({ children }) => {
     <main className="flex min-h-screen flex-col items-center">
       <NavigationBar />
 
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+      <div className="container flex flex-col justify-center gap-6 px-4 py-8">
         {children}
       </div>
     </main>
   );
 };
-``
+``;

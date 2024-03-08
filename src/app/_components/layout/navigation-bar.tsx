@@ -1,4 +1,9 @@
-export const NavigationBar: React.FC = () => {
+import Link from "next/link";
+import { getServerAuthSession } from "~/server/auth";
+
+export const NavigationBar: React.FC = async () => {
+  const session = await getServerAuthSession();
+
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -21,54 +26,42 @@ export const NavigationBar: React.FC = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
           >
             <li>
-              <a>Item 1</a>
+              <Link className="active" href="/github">
+                Github
+              </Link>
             </li>
             <li>
-              <a>Parent</a>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>Item 3</a>
+              <Link href="/notion">Notion</Link>
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <Link className="btn btn-ghost text-xl" href="/">
+          Mark42
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>Item 1</a>
+            <Link href="/github">Github</Link>
           </li>
           <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
+            <Link href="/notion">Notion</Link>
           </li>
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <p className="mr-2 text-sm">
+          {session && <span>Logged in as {session.user?.name}</span>}
+        </p>
+        <Link
+          href={session ? "/api/auth/signout" : "/api/auth/signin"}
+          className="btn btn-ghost"
+        >
+          {session ? "Sign out" : "Sign in"}
+        </Link>
       </div>
     </div>
   );
