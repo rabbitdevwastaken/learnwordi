@@ -1,4 +1,4 @@
-import { relations, sql } from "drizzle-orm";
+import { relations, sql, } from "drizzle-orm";
 import {
   index,
   int,
@@ -24,14 +24,42 @@ export const posts = createTable(
     createdById: text("createdById", { length: 255 })
       .notNull()
       .references(() => users.id),
-    createdAt: int("created_at", { mode: "timestamp" })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
+    createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
     updatedAt: int("updatedAt", { mode: "timestamp" }),
   },
-  (example) => ({
+(example) => ({
     createdByIdIdx: index("createdById_idx").on(example.createdById),
     nameIndex: index("name_idx").on(example.name),
+  })
+);
+
+export const words = createTable(
+  "word",
+  {
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    name: text("name", { length: 256 }).notNull(),
+    definition: text("definition", { length: 256 }).notNull(),
+    selected: int("selected", { mode: "boolean" }).default(false).notNull(),
+    createdById: text("createdById", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: int("updatedAt", { mode: "timestamp" }),
+  },
+);
+
+export const definitions = createTable(
+  "definition",
+  {
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    wordId: int("wordId", { mode: "number" })
+      .notNull()
+      .references(() => words.id),
+    definition: text("definition", { length: 256 }).notNull(),
+    createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  },
+  (definition) => ({
+    wordIdIdx: index("wordId_idx").on(definition.wordId),
   })
 );
 

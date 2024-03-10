@@ -12,6 +12,8 @@ export default async function Home() {
       {/* Home / Landing page explaining the following product: 
     Mark42 is a tool that helps you to create and manage your tweets using AI using your content from different platforms like github, notion, etc.
     */}
+      <CrudShowcase></CrudShowcase>
+
       <section className="w-full py-6 sm:py-12 md:py-24 lg:py-32 xl:py-48">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_600px] lg:gap-12 xl:grid-cols-[1fr_800px]">

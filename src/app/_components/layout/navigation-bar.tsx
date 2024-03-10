@@ -29,12 +29,15 @@ export const NavigationBar: React.FC = async () => {
             className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
           >
             <li>
-              <Link className="active" href="/github">
-                Github
+              <Link className="active" href="/words">
+                Words
               </Link>
             </li>
             <li>
-              <Link href="/notion">Notion</Link>
+              <Link href="/wallpaper">Wallpaper</Link>
+            </li>
+            <li>
+              <Link href="/practice">Practice</Link>
             </li>
           </ul>
         </div>
@@ -45,10 +48,15 @@ export const NavigationBar: React.FC = async () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link href="/github">Github</Link>
+            <Link className="active" href="/words">
+              Words
+            </Link>
           </li>
           <li>
-            <Link href="/notion">Notion</Link>
+            <Link href="/wallpaper">Wallpaper</Link>
+          </li>
+          <li>
+            <Link href="/practice">Practice</Link>
           </li>
         </ul>
       </div>
