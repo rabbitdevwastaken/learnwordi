@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, and } from 'drizzle-orm';
 
 import {
   createTRPCRouter,
@@ -69,10 +69,23 @@ export const wordRouter = createTRPCRouter({
     }),
 
   getMany: protectedProcedure.query(({ ctx }) => {
-
     return ctx.db.select()
       .from(words)
       .where(eq(words.createdById, ctx.session.user.id))
+      .orderBy(desc(words.createdAt))
+      .innerJoin(definitions, eq(words.id, definitions.wordId))
+      .all();
+  }),
+
+  getSelected: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.select()
+      .from(words)
+      .where(
+        and(
+          eq(words.createdById, ctx.session.user.id), 
+          eq(words.selected, true)
+        )
+      )
       .orderBy(desc(words.createdAt))
       .innerJoin(definitions, eq(words.id, definitions.wordId))
       .all();

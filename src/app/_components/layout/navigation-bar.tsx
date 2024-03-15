@@ -1,8 +1,11 @@
+"use client";
 import Link from "next/link";
-import { getServerAuthSession } from "~/server/auth";
+import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react"
 
-export const NavigationBar: React.FC = async () => {
-  const session = await getServerAuthSession();
+export const NavigationBar: React.FC = () => {
+  const pathname = usePathname();
+  const { data: session } = useSession();
 
   return (
     <div className="navbar bg-base-100">
@@ -26,37 +29,63 @@ export const NavigationBar: React.FC = async () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
+            className="menu flex gap-1 dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
           >
             <li>
-              <Link className="active" href="/words">
+              <Link
+                className={pathname === "/words" ? "active" : ""}
+                href="/words"
+              >
                 Words
               </Link>
             </li>
             <li>
-              <Link href="/wallpaper">Wallpaper</Link>
+              <Link
+                className={pathname === "/wallpaper" ? "active" : ""}
+                href="/wallpaper"
+              >
+                Wallpaper
+              </Link>
             </li>
             <li>
-              <Link href="/practice">Practice</Link>
+              <Link
+                className={pathname === "/practice" ? "active" : ""}
+                href="/practice"
+              >
+                Practice
+              </Link>
             </li>
           </ul>
         </div>
         <Link className="btn btn-ghost text-xl" href="/">
-          Mark42
+          Wordi
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu flex gap-1 menu-horizontal px-1">
           <li>
-            <Link className="active" href="/words">
+            <Link
+              className={pathname === "/words" ? "active" : ""}
+              href="/words"
+            >
               Words
             </Link>
           </li>
           <li>
-            <Link href="/wallpaper">Wallpaper</Link>
+            <Link
+              className={pathname === "/wallpaper" ? "active" : ""}
+              href="/wallpaper"
+            >
+              Wallpaper
+            </Link>
           </li>
           <li>
-            <Link href="/practice">Practice</Link>
+            <Link
+              className={pathname === "/practice" ? "active" : ""}
+              href="/practice"
+            >
+              Practice
+            </Link>
           </li>
         </ul>
       </div>

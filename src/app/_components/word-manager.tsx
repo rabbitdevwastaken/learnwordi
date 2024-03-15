@@ -95,16 +95,16 @@ const WordManager: React.FC<WordManageProps> = (
     }
   };
   return (
-    <>
+    <div className="relative flex h-full flex-col">
       <WordInput
         name={name}
         setName={setName}
         handleSubmit={handleSubmit}
       ></WordInput>
-      <div className="card mt-2 card-bordered flex w-full bg-base-100 px-5">
-        <ul className="w-full divide-y divide-gray-800 rounded-box">
+      <div className="card card-bordered mt-2 flex w-full flex-grow bg-base-100 px-5">
+        <ul className="absolute bottom-0 left-0 right-0 top-0 w-full divide-y divide-gray-800 rounded-box overflow-auto">
           {wordsList.map((dictionary, index) => (
-            <li key={index} className="flex justify-between gap-x-6 py-5">
+            <li key={index} className="flex justify-between gap-x-6 p-5">
               <WordRow
                 showRemoveButton={true}
                 {...dictionary}
@@ -121,7 +121,7 @@ const WordManager: React.FC<WordManageProps> = (
           ))}
         </ul>
       </div>
-    </>
+    </div>
   );
 };
 

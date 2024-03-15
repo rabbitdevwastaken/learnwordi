@@ -8,6 +8,7 @@ type WordManageAuthProps = {
 
 const WordManageAuth: React.FC<WordManageAuthProps> = ({ wordsList }) => {
   const utils = api.useUtils();
+
   const removeMutation = api.word.remove.useMutation({
     onSuccess: async () => {
       void utils.word.getMany.invalidate();
